@@ -171,8 +171,9 @@ Reflects overall status of the vehicle.
 | Check Control             | check-control       | String        | Presence of active warning messages            |  X   |  X   |    X    |  X  |
 | Plug Connection Status    | plug-connection     | String        | Plug is _Connected_ or _Not connected_         |      |  X   |    X    |  X  |
 | Charging Status           | charge              | String        | Current charging status                        |      |  X   |    X    |  X  |
-| Charging Information      | charge-info         | String        | Information regarding current charging session |      |  X   |    X    |  X  |
-| Last Status Timestamp     | last-update         | DateTime      | Date and time of last status update            |  X   |  X   |    X    |  X  |
+| Remaining Charging Time   | charge-remaining    | Number:Time   | Remainining time for current charging session  |      |  X   |    X    |  X  |
+| Last Status Timestamp     | last-update         | DateTime      | Date and time of last status update of the car |  X   |  X   |    X    |  X  |
+| Last Fetched Timestamp    | last-fetched        | DateTime      | Date and time of last time status fetched      |  X   |  X   |    X    |  X  |
 
 Overall Door Status values
 
@@ -246,17 +247,19 @@ See description [Range vs Range Radius](#range-vs-range-radius) to get more info
 * Availability according to table
 * Read-only values
 
-| Channel Label             | Channel ID              | Type                 | conv | phev | bev_rex | bev |
-|---------------------------|-------------------------|----------------------|------|------|---------|-----|
-| Mileage                   | mileage                 | Number:Length        |  X   |  X   |    X    |  X  |
-| Fuel Range                | range-fuel              | Number:Length        |  X   |  X   |    X    |     |
-| Electric Range            | range-electric          | Number:Length        |      |  X   |    X    |  X  | 
-| Hybrid Range              | range-hybrid            | Number:Length        |      |  X   |    X    |     | 
-| Battery Charge Level      | soc                     | Number:Dimensionless |      |  X   |    X    |  X  |
-| Remaining Fuel            | remaining-fuel          | Number:Volume        |  X   |  X   |    X    |     | 
-| Fuel Range Radius         | range-radius-fuel       | Number:Length        |  X   |  X   |    X    |     | 
-| Electric Range Radius     | range-radius-electric   | Number:Length        |      |  X   |    X    |  X  | 
-| Hybrid Range Radius       | range-radius-hybrid     | Number:Length        |      |  X   |    X    |     | 
+| Channel Label                      | Channel ID                 | Type                 | conv | phev | bev_rex | bev |
+|------------------------------------|----------------------------|----------------------|------|------|---------|-----|
+| Mileage                            | mileage                    | Number:Length        |  X   |  X   |    X    |  X  |
+| Fuel Range                         | range-fuel                 | Number:Length        |  X   |  X   |    X    |     |
+| Electric Range                     | range-electric             | Number:Length        |      |  X   |    X    |  X  | 
+| Hybrid Range                       | range-hybrid               | Number:Length        |      |  X   |    X    |     | 
+| Battery Charge Level               | soc                        | Number:Dimensionless |      |  X   |    X    |  X  |
+| Remaining Fuel                     | remaining-fuel             | Number:Volume        |  X   |  X   |    X    |     | 
+| Estimated Fuel Consumption l/100km | estimated-fuel-l-100km     | Number:Dimensionless |  X   |  X   |    X    |     | 
+| Estimated Fuel Consumption mpg     | estimated-fuel-mpg         | Number:Dimensionless |  X   |  X   |    X    |     | 
+| Fuel Range Radius                  | range-radius-fuel          | Number:Length        |  X   |  X   |    X    |     | 
+| Electric Range Radius              | range-radius-electric      | Number:Length        |      |  X   |    X    |  X  | 
+| Hybrid Range Radius                | range-radius-hybrid        | Number:Length        |      |  X   |    X    |     | 
 
 
 #### Doors Details
@@ -364,13 +367,14 @@ Parallel execution isn't supported.
 
 The channel _command_ provides options
 
-* _ight-flash_
+* _light-flash_
 * _vehicle-finder_
 * _door-lock_
 * _door-unlock_
 * _horn-blow_
 * _climate-now-start_
 * _climate-now-stop_
+* _charge-now_
 
 The channel _state_ shows the progress of the command execution in the following order
 
@@ -526,33 +530,36 @@ If these preconditions are fulfilled proceed with the fingerprint generation.
 
 #### Generate Debug Fingerprint
 
-<img align="right" src="./doc/DiscoveryScan.png" width="400" height="350"/>
+Login to the openHAB console and use the `mybmw fingerprint` command.
 
+Fingerprint information on your account and vehicle(s) will show in the console and can be copied from there.
+A zip file with fingerprint information for your vehicle(s) will also be generated and put in the `mybmw` folder in your home directory.
+This fingerprint information is valuable for the developers to better support your vehicle in the software.
 
-First [enable debug logging](https://www.openhab.org/docs/administration/logging.html#defining-what-to-log) for the binding.
+You can restrict the accounts and vehicles for the fingerprint generation.
+Full syntax is available through the `mybmw help` console command.
 
-```
-log:set DEBUG org.openhab.binding.mybmw
-```
-
-The debug fingerprint is generated every time the discovery is executed.
-To force a new fingerprint perform a _Scan_ for MyBMW things.
-Personal data is eliminated from the log entries so it should be possible to share them in public.
+Personal data is eliminated from fingerprints so it should be possible to share them in public.
 Data like
 
 * Vehicle Identification Number (VIN)
 * Location data
 
-are anonymized in the JSON response, if you share the URL as well please anonymize the VIN on your own.
-You'll find the fingerprint in the logs with the command
+are anonymized in the JSON response and URL's.
 
-```
-grep "Response Data - BEGIN" openhab.log
-```
+After the corresponding fingerprint is generated please [follow the instructions to raise an issue](https://community.openhab.org/t/how-to-file-an-issue/68464) and attach the fingerprint!
 
-After the corresponding fingerprint is generated please [follow the instructions to raise an issue](https://community.openhab.org/t/how-to-file-an-issue/68464) and attach the fingerprint data!
 Your feedback is highly appreciated!
 
+#### Debug Logging
+
+You can [enable debug logging](https://www.openhab.org/docs/administration/logging.html#defining-what-to-log) to get more information on the behaviour of the binding.
+
+```
+log:set DEBUG org.openhab.binding.mybmw
+```
+
+As with fingerprint data, personal data is eliminated from logs.
 
 ### Range vs Range Radius
 
