@@ -1,4 +1,8 @@
-# MyBMW Binding
+# Disclaimer
+Please download the **appropriate file for your installation**. The 4.0.0 file will work for 4.0.x, 4.1.0 will work only for the same version right now!
+
+
+# MyBMW Binding - same README like in the official repo PR
 
 The binding provides access like [MyBMW App](https://www.bmw.com/en/footer/mybmw-app.html) to openHAB.
 All vehicles connected to an account will be detected by the discovery with the correct type: 
