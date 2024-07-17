@@ -1,5 +1,5 @@
 # Disclaimer
-Please download the **appropriate file for your installation**. The 3.4.5 file will work for 3.4.x, 4.1.x will work only for the same version right now!
+Please download the **appropriate file for your installation**. The 3.4.5 file will work for 3.4.x, 4.1.x and 4.2.x will work only for the same version right now!
 
 
 # MyBMW Binding
