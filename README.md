@@ -1,6 +1,8 @@
 # Disclaimer
 Please download the **appropriate file for your installation**. The 3.4.5 file will work for 3.4.x, 4.1.x and 4.2.x will work only for the same version right now!
 
+Only 4.2.x and 4.3.x contain the fix for the captcha token!
+
 
 # MyBMW Binding
 
